@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{% block title %}{% endblock %}</title>
+<link rel="stylesheet" type="text/css" href="/static/css/public.css" />
+<link rel="stylesheet" type="text/css" href="/static/css/page.css" />
+<script type="text/javascript" src="/static/js/jquery.min.js"></script>
+<script type="text/javascript" src="/static/js/public.js"></script>
+</head>
+<nav>
+  <ul>
+    {% if g.user %}
+      <li><span>{{ g.user['username'] }}</span>
+      <li><a href="{{ url_for('user.logout') }}">注销</a>
+    {% else %}
+      <li><a href="{{ url_for('user.register') }}">注册</a>
+      <li><a href="{{ url_for('user.login') }}">登录</a>
+    {% endif %}
+  </ul>
+</nav>
+<section class="content">
+  <header>
+    {% block header %}{% endblock %}
+  </header>
+  {% block content %}{% endblock %}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }}" style="text-align: center">
+              <a class="close" href="{{ url_for('user.register') }}">×</a>
+            <strong>{{ message }}</strong></div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+</section>

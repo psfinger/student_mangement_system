@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block title %}登录{% endblock %}
+{% block content %}
+<body>
+	<form action="" method="post">
+	<!-- 登录body -->
+	<div class="logDiv">
+		<img class="logBanner" src="/static/img/logBanner.png" />
+		<div class="logGet">
+			<!-- 头部提示信息 -->
+			<div class="logD logDtip">
+				<p class="p1">登录</p>
+				<span style="color: red">{{msg}}</span>
+			</div>
+			<!-- 输入框 -->
+			<div class="lgD">
+				<img class="img1" src="/static/img/logName.png" />
+				<input type="text" placeholder="输入用户名" name="username" />
+			</div>
+			<div class="lgD">
+				<img class="img1" src="/static/img/logPwd.png" />
+				<input type="password" placeholder="输入用户密码" name="password"/>
+			</div>
+			<div class="logC">
+
+					<button>
+						<input type="submit" value="登 &nbsp;&nbsp;陆" style="background: none;border: none;color: white">
+					</button>
+
+			</div>
+		</div>
+	</div>
+	</form>
+	<!-- 登录body  end -->
+
+	<!-- 登录页面底部 -->
+	<div class="logFoot">
+		<p class="p1">2020</p>
+		<p class="p2">版权© Made by psfinger</p>
+	</div>
+	<!-- 登录页面底部end -->
+   
+</body>
+{% endblock %}
