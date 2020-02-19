@@ -11,7 +11,7 @@ def roles_list():
     """角色信息列表"""
     if request.method == 'GET':
         roles = Role.query.all()
-        return render_template('roles.html', roles=roles)
+        return render_template('main/role/roles.html', roles=roles)
 
 
 @main_blueprint.route('/addroles/', methods=['GET', 'POST'])
@@ -26,4 +26,4 @@ def add_roles():
         role = Role(r_name=r_name)
         role.save()
 
-        return redirect(url_for('user.roles_list'))
+        return redirect(url_for('main/role/addroles.html'))

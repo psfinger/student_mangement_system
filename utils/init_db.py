@@ -44,18 +44,10 @@ def init_role_db():
 
 def init_permission_db():
     # db.create_all()
-    per01 = Permission('添加学生', 'TJXS')
-    per02 = Permission('添加角色', 'TJJS')
-    per03 = Permission('权限列表', 'QXLB')
-    per04 = Permission('添加权限', 'TJQX')
-    per05 = Permission('添加用户', 'TJYH')
+    per01 = Permission('用户列表', 'YHLB')
     db.session.add(per01)
-    db.session.add(per02)
-    db.session.add(per03)
-    db.session.add(per04)
-    db.session.add(per05)
     db.session.commit()
 
 
 if __name__ == '__main__':
-    init_student_db()
+    init_permission_db()
