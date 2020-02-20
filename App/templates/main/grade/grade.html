@@ -36,33 +36,9 @@
         <p class="msg">共找到{{paginate.total}}条匹配记录</p>
     </div>
 
-    <ul id="PageNum">
-
-        <li><a href="/user/grade/?page=1">首页</a></li>
-        {% if paginate.has_prev %}
-            <li><a href="/user/grade/?page={{ paginate.prev_num }}">上一页</a></li>
-        {% endif %}
-
-        {% for p  in paginate.iter_pages() %}
-            <li>
-                {% if p %}
-                    {% if p != paginate.page %}
-                    <a href="/user/grade/?page={{ p }}">{{ p }}</a>
-                    {% else %}
-                    <span> {{ p }} </span>
-                    {% endif %}
-                {% else %}
-                    <span>...</span>
-                {% endif %}
-            </li>
-        {% endfor  %}
-
-        {% if paginate.has_next %}
-            <li><a href="/user/grade/?page={{ paginate.next_num }}">下一页</a></li>
-        {% endif %}
-            <li><a href="/user/grade/?page={{ paginate.pages }}">尾页</a></li>
-        <span>| 共{{paginate.pages}}页 | 当前第{{paginate.page}}页</span>
-    </ul>
+    <!-- 分页 -->
+    {% from 'mymacro.html' import my_render_pagination %}
+    {{ my_render_pagination(paginate,'grade') }}
 
 </div>
 

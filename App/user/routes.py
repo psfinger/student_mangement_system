@@ -4,7 +4,7 @@ from flask import render_template, session, request, url_for, flash, g
 from werkzeug.utils import redirect
 
 from App.user import user_blueprint
-from App.models import User
+from App.models import User, Role
 from App.user.forms import RegistrationForm
 
 
@@ -126,90 +126,16 @@ def is_login(func):
     return check_login
 
 
-@user_blueprint.route('/userperlist/', methods=['GET', 'POST'])
-@is_login
-def user_per_list():
-    """用户权限列表"""
-    if request.method == 'GET':
-        r_id = request.args.get('r_id')
-        pers = Role.query.filter(Role.r_id == r_id).first().permission
-        return render_template('user_per_list.html', pers=pers)
-
-    if request.method == 'POST':
-        r_id = request.args.get('r_id')
-        p_id = request.form.get('p_id')
-        # 获取到角色对象
-        role = Role.query.get(r_id)
-        # 获取到权限对象
-        per = Permission.query.get(p_id)
-        # 解除角色和权限的对应关系
-        per.roles.remove(role)
-        # 保存解除的关联的信息
-        db.session.commit()
-        pers = Role.query.filter(Role.r_id == r_id).first().permission
-        # 返回到用户权限列表
-        return render_template('user_per_list.html', pers=pers, r_id=r_id)
-
-
-@user_blueprint.route('/adduserper/', methods=['GET', 'POST'])
-@is_login
-def add_user_per():
-    """添加用户权限"""
-    if request.method == 'GET':
-        permissions = Permission.query.all()
-        r_id = request.args.get('r_id')
-        return render_template('add_user_per.html', permissions=permissions, r_id=r_id)
-
-    if request.method == 'POST':
-        r_id = request.form.get('r_id')
-        p_id = request.form.get('p_id')
-        # 获取角色对象
-        role = Role.query.get(r_id)
-        # 获取权限对象
-        per = Permission.query.get(p_id)
-        # 添加对应的角色和权限的对应关系
-        per.roles.append(role)
-        # 添加
-        db.session.add(per)
-        # 保存信息
-        db.session.commit()
-
-        return redirect(url_for('user.roles_list'))
-
-
-@user_blueprint.route('/subuserper/', methods=['GET', 'POST'])
-@is_login
-def sub_user_per():
-    """减少用户权限"""
-    if request.method == 'GET':
-        r_id = request.args.get('r_id')
-        pers = Role.query.filter(Role.r_id == r_id).first().permission
-        return render_template('user_per_list.html', pers=pers, r_id=r_id)
-
-    if request.method == 'POST':
-        r_id = request.args.get('r_id')
-        p_id = request.form.get('p_id')
-        role = Role.query.get(r_id)
-        per = Permission.query.get(p_id)
-
-        # 解除角色和权限的对应关系
-        per.roles.remove(role)
-        db.session.commit()
-
-        pers = Role.query.filter(Role.r_id == r_id).first().permission
-        return render_template('user_per_list.html', pers=pers, r_id=r_id)
-
-
 @user_blueprint.route('/userlist/', methods=['GET', 'POST'])
 @is_login
 def user_list():
     """用户信息列表"""
     if request.method == 'GET':
-        page = int(request.args.get('page',1))
-        page_num = int(request.args.get('page_num',5))
-        paginate = User.query.order_by('u_id').paginate(page,page_num)
+        page = int(request.args.get('page', 1))
+        page_num = int(request.args.get('page_num', 5))
+        paginate = User.query.order_by('u_id').paginate(page, page_num)
         users = paginate.items
-        return render_template('users.html', users=users,paginate=paginate)
+        return render_template('user/users.html', users=users, paginate=paginate)
 
 
 @user_blueprint.route('/adduser/', methods=['GET', 'POST'])
@@ -217,7 +143,7 @@ def user_list():
 def add_user():
     """添加用户信息"""
     if request.method == 'GET':
-        return render_template('adduser.html')
+        return render_template('user/adduser.html')
 
     if request.method == 'POST':
         username = request.form.get('username')
@@ -225,6 +151,7 @@ def add_user():
         password2 = request.form.get('password2')
 
         flag = True
+        msg = ''
         if not all([username, password1, password2]):
             msg, flag = '请填写完整信息', False
         if len(username) > 16:
@@ -232,10 +159,21 @@ def add_user():
         if password1 != password2:
             msg, flag = '两次密码不一致', False
         if not flag:
-            return render_template('adduser.html', msg=msg)
+            return render_template('user/adduser.html', msg=msg)
         user = User(username=username, password=password1)
         user.save()
         return redirect(url_for('user.user_list'))
+
+
+@user_blueprint.route('/deluser/', methods=['GET'])
+@is_login
+def del_user():
+    """删除用户"""
+    u_id = request.args.get('u_id')
+    user = User.query.filter(User.u_id == u_id).first()
+    if user:
+        user.delete()
+    return redirect(url_for('user.user_list'))
 
 
 @user_blueprint.route('/assignrole/', methods=['GET', 'POST'])
@@ -245,13 +183,13 @@ def assign_user_role():
     if request.method == 'GET':
         u_id = request.args.get('u_id')
         roles = Role.query.all()
-        return render_template('assign_user_role.html', roles=roles, u_id=u_id)
+        return render_template('user/assign_user_role.html', roles=roles, u_id=u_id)
     if request.method == 'POST':
         r_id = request.form.get('r_id')
         u_id = request.form.get('u_id')
         user = User.query.filter_by(u_id=u_id).first()
         user.role_id = r_id
-        db.session.commit()
+        user.save()
 
         return redirect(url_for('user.user_list'))
 
@@ -260,36 +198,29 @@ def assign_user_role():
 @is_login
 def change_password():
     """修改用户密码"""
+    username = session.get('username')
+    user = User.query.filter_by(username=username).first()
     if request.method == 'GET':
-        username = session.get('username')
-        user = User.query.filter_by(username=username).first()
-        return render_template('changepwd.html', user=user)
+        return render_template('user/changepwd.html', user=user)
 
     if request.method == 'POST':
-        username = session.get('username')
         pwd1 = request.form.get('pwd1')
         pwd2 = request.form.get('pwd2')
         pwd3 = request.form.get('pwd3')
 
-        pwd = User.query.filter(User.password == pwd1, User.username == username).first()
-        if not pwd:
+        auth = User.query.filter(User.password == pwd1, User.username == username).first()
+        if not auth:
             msg = '请输入正确的旧密码'
-            username = session.get('username')
-            user = User.query.filter_by(username=username).first()
-            return render_template('changepwd.html', msg=msg, user=user)
+            return render_template('user/changepwd.html', msg=msg, user=user)
         else:
             if not all([pwd2, pwd3]):
                 msg = '密码不能为空'
-                username = session.get('username')
-                user = User.query.filter_by(username=username).first()
-                return render_template('changepwd.html', msg=msg, user=user)
+                return render_template('user/changepwd.html', msg=msg, user=user)
             if pwd2 != pwd3:
                 msg = '两次密码不一致,请重新输入'
-                username = session.get('username')
-                user = User.query.filter_by(username=username).first()
-                return render_template('changepwd.html', msg=msg, user=user)
-            pwd.password = pwd2
-            db.session.commit()
+                return render_template('user/changepwd.html', msg=msg, user=user)
+            auth.password = pwd2
+            auth.save()
             return redirect(url_for('user.change_pass_sucess'))
 
 
@@ -298,5 +229,5 @@ def change_password():
 def change_pass_sucess():
     """修改密码成功后"""
     if request.method == 'GET':
-        return render_template('changepwdsu.html')
+        return render_template('user/changepwdsu.html')
 

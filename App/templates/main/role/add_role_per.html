@@ -1,5 +1,6 @@
 <!DOCTYPE HTML>
 <head>
+    <title></title>
     <link href="/static/css/haiersoft.css" rel="stylesheet" type="text/css" media="screen,print"/>
     <link href="/static/css/print.css" rel="stylesheet" type="text/css" media="print"/>
     <script src="/static/js/jquery-1.10.1.min.js"></script>
@@ -9,20 +10,25 @@
 <body>
 <!-- Popup -->
 <div id="Popup">
+
     <!-- SubPopup -->
     <div id="SubPopup">
         <form action="" method="post">
             <div class="form_boxC">
-                <table>
+                <table cellpadding="0" cellspacing="0">
                     <tr>
-                        <th width="100">分配角色</th>
+                        <th width="100">权限名称</th>
                         <td>
-                            <input type="hidden" name="u_id" value="{{u_id}}">
-                                <select name="r_id" id="">
-                                    {% for role in roles %}
-                                    <option value="{{role.r_id}}">{{role.r_name}}</option>
-                                    {% endfor %}
-                                </select>
+                            <div class="selectbox" style="width:230px;">
+                                <input type="hidden" name="r_id" value="{{r_id}}">
+                                    <select name="p_id" id="">
+                                        {% for permission in permissions %}
+                                        <option value="{{permission.p_id}}">{{permission.p_name}}</option>
+                                        {% endfor %}
+                                    </select>
+
+
+                            </div>
                         </td>
                     </tr>
 
@@ -36,6 +42,8 @@
         </form>
     </div>
     <!-- SubPopup -->
+
+
 </div>
 <!-- /Popup -->
 </body>

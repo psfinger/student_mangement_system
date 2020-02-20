@@ -1,11 +1,27 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from App.models import User, Grade, Student, Permission, r_p
+from App.models import User, Grade, Student, Permission, RP
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///E:/sqlite/studetManagement.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
+
+
+def create_db():
+    """
+    创建数据
+    """
+    db.create_all()
+    return '创建成功'
+
+
+def drop_db():
+    """
+    删除数据库
+    """
+    db.drop_all()
+    return '删除成功'
 
 
 def init_user_db():
@@ -33,7 +49,7 @@ def init_student_db():
 
 
 def init_r_p_db():
-    rp05 = r_p(1, 5)
+    rp05 = RP(1, 5)
     db.session.add(rp05)
     db.session.commit()
 
