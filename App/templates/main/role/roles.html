@@ -24,14 +24,17 @@
                 <td>{{role.r_id}}</td>
                 <td>{{role.r_name}}</td>
                 <td>
-                    <a href="/userperlist/?r_id={{role.r_id}}">查看权限</a> |
-                    <a href="/user/adduserper/?r_id={{role.r_id}}">添加权限 </a> |
-                    <a href="/user/subuserper/?r_id={{role.r_id}}">减少权限</a>
+                    <a href="/roleperlist/?r_id={{role.r_id}}">查看权限</a> |
+                    <a href="/addroleper/?r_id={{role.r_id}}">添加权限 </a> |
+                    <a href="/subroleper/?r_id={{role.r_id}}">减少权限</a>
                 </td>
             </tr>
             {% endfor %}
         </table>
     </div>
+    <!-- 分页 -->
+    {% from 'mymacro.html' import my_render_pagination %}
+    {{ my_render_pagination(paginate,'roles') }}
 
 </div>
 

@@ -1,5 +1,6 @@
 from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
+
 # from App import db
 
 db = SQLAlchemy()
@@ -9,7 +10,7 @@ class Grade(db.Model):
     g_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     g_name = db.Column(db.String(20), unique=True)
     g_create_time = db.Column(db.DateTime, default=datetime.now)
-    students = db.relationship('Student',backref= 'grade')
+    students = db.relationship('Student', backref='grade')
 
     __tablename__ = 'grade'
 
@@ -64,12 +65,21 @@ class User(db.Model):
         db.session.add(self)
         db.session.commit()
 
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
 
 # 角色和权限的(多对多的)关联表
 # r_p为关联表的表名
-r_p = db.Table('r_p',
-               db.Column('role_id', db.Integer, db.ForeignKey('role.r_id'), primary_key=True),
-               db.Column('permission_id', db.Integer, db.ForeignKey('permission.p_id'), primary_key=True))
+# r_p = db.Table('r_p',
+#               db.Column('role_id', db.Integer, db.ForeignKey('role.r_id'), primary_key=True),
+#               db.Column('permission_id', db.Integer, db.ForeignKey('permission.p_id'), primary_key=True))
+class RP(db.Model):
+    role_id = db.Column(db.Integer, db.ForeignKey('role.r_id'), primary_key=True)
+    permission_id = db.Column(db.Integer, db.ForeignKey('permission.p_id'), primary_key=True)
+
+    __tablename__ = 'r_p'
 
 
 class Role(db.Model):
@@ -79,11 +89,15 @@ class Role(db.Model):
 
     __tablename__ = 'role'
 
-    def __init__(self,r_name):
+    def __init__(self, r_name):
         self.r_name = r_name
 
     def save(self):
         db.session.add(self)
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
         db.session.commit()
 
 
@@ -91,14 +105,18 @@ class Permission(db.Model):
     p_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     p_name = db.Column(db.String(16), unique=True)
     p_er = db.Column(db.String(16), unique=True)
-    roles = db.relationship('Role', secondary=r_p, backref=db.backref('permission', lazy=True))
+    roles = db.relationship('Role', secondary='r_p', backref=db.backref('permission', lazy=True))
 
     __tablename__ = 'permission'
 
-    def __init__(self,p_name,p_er):
+    def __init__(self, p_name, p_er):
         self.p_name = p_name
         self.p_er = p_er
 
     def save(self):
         db.session.add(self)
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
         db.session.commit()

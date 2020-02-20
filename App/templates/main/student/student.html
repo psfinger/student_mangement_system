@@ -1,6 +1,5 @@
 <!DOCTYPE HTML>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title></title>
     <link href="/static/css/haiersoft.css" rel="stylesheet" type="text/css" media="screen,print"/>
     <link href="/static/css/print.css" rel="stylesheet" type="text/css" media="print"/>
@@ -35,33 +34,8 @@
         <p class="msg">共找到{{paginate.total}}条匹配记录</p>
     </div>
     <!-- 分页 -->
-    <ul id="PageNum">
-
-        <li><a href="/student/?page=1">首页</a></li>
-        {% if paginate.has_prev %}
-            <li><a href="/student/?page={{ paginate.prev_num }}">上一页</a></li>
-        {% endif %}
-
-        {% for p  in paginate.iter_pages() %}
-            <li>
-                {% if p %}
-                    {% if p != paginate.page %}
-                    <a href="/student/?page={{ p }}">{{ p }}</a>
-                    {% else %}
-                    <span> {{ p }} </span>
-                    {% endif %}
-                {% else %}
-                    <span>...</span>
-                {% endif %}
-            </li>
-        {% endfor  %}
-
-        {% if paginate.has_next %}
-            <li><a href="/student/?page={{ paginate.next_num }}">下一页</a></li>
-        {% endif %}
-            <li><a href="/student/?page={{ paginate.pages }}">尾页</a></li>
-        <span>| 共{{paginate.pages}}页 | 当前第{{paginate.page}}页</span>
-    </ul>
+    {% from 'mymacro.html' import my_render_pagination %}
+    {{ my_render_pagination(paginate,'student') }}
 
 </div>
 
