@@ -25,7 +25,7 @@
                 <td>{{permission.p_name}}</td>
                 <td>{{permission.p_er}}</td>
                 <td>
-                    <a href="{{ url_for('main.eidtor_permission', p_id=permission.p_id) }}">编辑</a> |
+                    <a href="{{ url_for('main.eidt_permission', p_id=permission.p_id) }}">编辑</a> |
                     <a href="/delper/?p_id={{permission.p_id}}" >删除</a>
                 </td>
             </tr>
@@ -37,7 +37,7 @@
 
     <!-- 分页 -->
     {% from 'mymacro.html' import my_render_pagination %}
-    {{ my_render_pagination(paginate,'permissions') }}
+    {{ my_render_pagination(paginate,'/permissions/?1=1') }}
 </div>
 
 </body>

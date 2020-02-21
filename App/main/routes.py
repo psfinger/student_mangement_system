@@ -7,9 +7,7 @@ from App.user.routes import is_login
 @main_blueprint.route('/home/', methods=['GET'])
 @is_login
 def home():
-    """
-    首页
-    """
+    """首页"""
     if request.method == 'GET':
         return render_template('index.html')
 
@@ -17,9 +15,7 @@ def home():
 @main_blueprint.route('/head/', methods=['GET'])
 @is_login
 def head():
-    """
-    页头
-    """
+    """页头"""
     if request.method == 'GET':
         return render_template('main/head.html')
 

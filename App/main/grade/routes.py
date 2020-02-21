@@ -81,27 +81,28 @@ def del_grade():
     return redirect(url_for('main.grade_list'))
 
 
-@main_blueprint.route('/grade_student/', methods=['GET'])
+@main_blueprint.route('/grade_student/<g_id>/', methods=['GET'])
 @is_login
-def grade_students_list():
-    """班级中学习的信息列表"""
+def grade_students_list(g_id):
+    """班级中学生的信息列表"""
     page = int(request.args.get('page', 1))
-    # 每页的条数是多少,默认为5条
     page_num = int(request.args.get('page_num', 5))
     if request.method == 'GET':
-        g_id = request.args.get('g_id')
+        grade = Grade.query.filter(Grade.g_id == g_id).first()
         paginate = Student.query.filter(Student.grade_id == g_id).order_by('s_id').paginate(page, page_num)
         stus = paginate.items
-        return render_template('main/student/student.html', stus=stus, paginate=paginate)
+        return render_template('main/grade/grade_stu_list.html', g_id=g_id, grade=grade, stus=stus, paginate=paginate)
 
-#等待实现
+
 @main_blueprint.route('/del_std_from_grade/', methods=['GET'])
 @is_login
 def del_std_from_grade():
     """从班级中移除某个学生"""
+    g_id = request.args.get('g_id')
     if request.method == 'GET':
         s_id = request.args.get('s_id')
-        grade = Grade.query.filter(Grade.g_id == g_id).first()
-        if grade:
-            grade.delete()
-    return redirect(url_for('main.grade_list'))
+        stu = Student.query.filter(Student.s_id == s_id).first()
+        if stu:
+            stu.grade_id = ''
+            stu.save()
+    return redirect(url_for('main.grade_students_list', g_id=g_id))

@@ -1,13 +1,11 @@
 <!DOCTYPE html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>{% block title %}{% endblock %}</title>
 <link rel="stylesheet" type="text/css" href="/static/css/public.css" />
 <link rel="stylesheet" type="text/css" href="/static/css/page.css" />
-<script type="text/javascript" src="/static/js/jquery.min.js"></script>
-<script type="text/javascript" src="/static/js/public.js"></script>
+<link rel="stylesheet" type="text/css" href="/static/css/nav.css" />
 </head>
-<nav>
+<div class="nav">
   <ul>
     {% if g.user %}
       <li><span>{{ g.user['username'] }}</span>
@@ -17,7 +15,7 @@
       <li><a href="{{ url_for('user.login') }}">登录</a>
     {% endif %}
   </ul>
-</nav>
+</div>
 <section class="content">
   <header>
     {% block header %}{% endblock %}

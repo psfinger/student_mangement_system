@@ -18,15 +18,15 @@
                 <th>序号</th>
                 <th>角色名称</th>
                 <th>操作</th>
-            </tr>s
+            </tr>
             {% for role in roles%}
             <tr>
                 <td>{{role.r_id}}</td>
                 <td>{{role.r_name}}</td>
                 <td>
-                    <a href="/roleperlist/?r_id={{role.r_id}}">查看权限</a> |
+                    <a href="/delroles/?r_id={{role.r_id}}" onClick="delcfm()">删除角色</a> |
                     <a href="/addroleper/?r_id={{role.r_id}}">添加权限 </a> |
-                    <a href="/subroleper/?r_id={{role.r_id}}">减少权限</a>
+                    <a href="/subroleper/?r_id={{role.r_id}}">减少权限 </a>
                 </td>
             </tr>
             {% endfor %}
@@ -34,7 +34,7 @@
     </div>
     <!-- 分页 -->
     {% from 'mymacro.html' import my_render_pagination %}
-    {{ my_render_pagination(paginate,'roles') }}
+    {{ my_render_pagination(paginate,'/roles/?1=1') }}
 
 </div>
 

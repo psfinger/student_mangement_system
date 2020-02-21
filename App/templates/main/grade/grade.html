@@ -28,7 +28,7 @@
                 <td>
                     <a href="/edit_grade/?g_id={{ grade.g_id }}">编辑</a> |
                     <a href="/del_grade/?g_id={{ grade.g_id }}" onClick="delcfm()">删除</a> |
-                    <a href="/grade_student/?g_id={{ grade.g_id }}">查看学生</a>
+                    <a href="/grade_student/{{ grade.g_id }}">查看学生</a>
                 </td>
             </tr>
             {% endfor %}
@@ -38,7 +38,7 @@
 
     <!-- 分页 -->
     {% from 'mymacro.html' import my_render_pagination %}
-    {{ my_render_pagination(paginate,'grade') }}
+    {{ my_render_pagination(paginate,'/grade/?1=1') }}
 
 </div>
 

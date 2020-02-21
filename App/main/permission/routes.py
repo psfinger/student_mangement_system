@@ -47,30 +47,47 @@ def add_permission():
 
         return redirect(url_for('main.permission_list'))
 
-#注意这里的/<p_id>
-@main_blueprint.route('/eidtorpermission/<int:p_id>', methods=['GET', 'POST'])
+
+# 注意这里的/<p_id>
+@main_blueprint.route('/eidtpermission/<int:p_id>', methods=['GET', 'POST'])
 @is_login
-def eidtor_permission(p_id, msg=""):
+def eidt_permission(p_id, msg=""):
     """编辑权限"""
     per = Permission.query.filter(Permission.p_id == p_id).first()
     if request.method == 'GET':
-        return render_template('main/permission/addpermission.html', p_name=per.p_name, p_er=per.p_er, p_id=p_id, msg=msg)
+        return render_template('main/permission/addpermission.html',
+                               p_name=per.p_name,
+                               p_er=per.p_er,
+                               p_id=p_id,
+                               msg=msg)
     if request.method == 'POST':
         p_id = request.form.get('p_id')
         p_name = request.form.get('p_name')
         p_er = request.form.get('p_er')
         if not all([p_name, p_er]):
             msg = '* 请填写好完整的信息'
-            return render_template('main/permission/addpermission.html', p_name=per.p_name, p_er=per.p_er, p_id=p_id, msg=msg)
+            return render_template('main/permission/addpermission.html',
+                                   p_name=per.p_name,
+                                   p_er=per.p_er,
+                                   p_id=p_id,
+                                   msg=msg)
         p_name_test_repeat = Permission.query.filter(Permission.p_name == p_name).first()
-        if p_name_test_repeat:
+        if p_name_test_repeat and p_name != per.p_name:
             msg = '*权限名称重复'
-            return render_template('main/permission/addpermission.html', p_name=per.p_name, p_er=per.p_er, p_id=p_id, msg=msg)
+            return render_template('main/permission/addpermission.html',
+                                   p_name=per.p_name,
+                                   p_er=per.p_er,
+                                   p_id=p_id,
+                                   msg=msg)
 
         p_er_test_repeat = Permission.query.filter(Permission.p_er == p_er).first()
-        if p_er_test_repeat:
+        if p_er_test_repeat and p_er != per.p_er:
             msg = '*权限简写名重复'
-            return render_template('main/permission/addpermission.html', p_name=per.p_name, p_er=per.p_er, p_id=p_id, msg=msg)
+            return render_template('main/permission/addpermission.html',
+                                   p_name=per.p_name,
+                                   p_er=per.p_er,
+                                   p_id=p_id,
+                                   msg=msg)
 
         per = Permission.query.filter(Permission.p_id == p_id).first()
         per.p_name = p_name

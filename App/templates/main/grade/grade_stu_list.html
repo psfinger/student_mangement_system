@@ -14,23 +14,18 @@
 <!-- MainForm -->
 <div id="MainForm">
     <div class="form_boxA">
-        <h2>学生信息列表</h2>
+        <h2>{{ grade.g_name }} 班  学生信息列表</h2>
         <table cellpadding="0" cellspacing="0">
             <tr>
                 <th>序号</th>
                 <th>学生姓名</th>
-                <th>班级</th>
                 <th>操作</th>
             </tr>
             {% for stu in stus%}
             <tr>
                 <td>{{stu.s_id}}</td>
                 <td>{{stu.s_name}}</td>
-                <td>{{stu.grade.g_name}}</td>
-                <td>
-                    <a href="/editstu/?s_id={{ stu.s_id }}" >编辑</a>
-                    <a href="/delstu/?s_id={{ stu.s_id }}"  onClick="delcfm()">删除</a>
-                </td>
+                <td><a href="/del_std_from_grade/?s_id={{ stu.s_id }}&g_id={{ g_id }}"  onClick="delcfm()">移除</a></td>
             </tr>
             {% endfor %}
         </table>
@@ -38,7 +33,7 @@
     </div>
     <!-- 分页 -->
     {% from 'mymacro.html' import my_render_pagination %}
-    {{ my_render_pagination(paginate,'/student/?g_id='+g_id) }}
+    {{ my_render_pagination(paginate,'/grade_student/'+g_id+'/?1=1') }}
 
 </div>
 

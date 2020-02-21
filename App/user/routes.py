@@ -75,9 +75,7 @@ def register():
 
 @user_blueprint.route('/login', methods=['GET', 'POST'])
 def login():
-    """
-    登录
-    """
+    """登录"""
     if request.method == 'GET':
         return render_template('user/login.html')
 

@@ -54,8 +54,9 @@
                     <tr>
                         <th>学生姓名 <span class="f_cB">*</span></th>
                         <td>
-                                <input name="s_name" type="text" size="10" value="">
-                                <span style="color: red">{{msg}}</span>
+                            <input type="hidden" name="s_id" value="{{s_id}}">
+                            <input name="s_name" type="text" size="10" value="{{s_name}}">
+                            <span style="color: red">{{msg}}</span>
                         </td>
                     </tr>
 
@@ -63,8 +64,13 @@
                         <th>性别<span class="f_cB">*</span></th>
                         <td><!-- selectbox -->
                             <select name="s_sex" id="">
+                                {% if s_sex == 0 %}
                                 <option value="1">男</option>
+                                <option value="0" selected>女</option>
+                                {% else %}
+                                <option value="1" selected>男</option>
                                 <option value="0">女</option>
+                                {% endif %}
                             </select>
                         </td>
                     </tr>
@@ -74,7 +80,11 @@
                         <td><!-- selectbox -->
                             <select name="g_id">
                                 {% for grade in grades %}
-                                <option value="{{grade.g_id}}">{{grade.g_name}}</option>
+                                {% if grade.g_id == g_id %}
+                                <option value="{{grade.g_id}}" selected>{{grade.g_name}}</option>
+                                {% else %}
+                                 <option value="{{grade.g_id}}">{{grade.g_name}}</option>
+                                {% endif %}
                                 {% endfor %}
                             </select>
                         </td>

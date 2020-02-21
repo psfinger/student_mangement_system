@@ -1,0 +1,36 @@
+/*导航栏样式*/
+/*去掉ul的样式*/
+ul{
+    list-style:none;
+}
+/*去掉a标签的下划线*/
+a{
+    text-decoration: none;
+}
+/*设置.nav的宽高、居中显示、下边框样式*/
+.nav{
+    width: 970px;
+    height: 25px;
+    margin: 0 auto;
+    border-bottom: 2px solid #0266A3;
+}
+/*line-height: 25px;与父元素.nav的height一样，使得li居中显示*/
+.nav li{
+    padding:0 15px 0 15px;
+    line-height: 25px;
+    float: left;
+    font-size: 14px;
+    font-weight: bold;
+}
+/*a标签不能继承父标签的颜色，所以需要单独设置a标签中的字体颜色*/
+.nav li a{
+    color: #0266A3;
+}
+/*当鼠标移动到li标签时，背景颜色变成#0266A3*/
+.nav li:hover{
+    background-color:#0266A3 ;
+}
+/*当鼠标移动到li标签时，a标签中的字体颜色变成#0266A3*/
+.nav  li:hover  a{
+    color: white;
+}

@@ -30,6 +30,6 @@ def create_app(config_class=Config):
 
     app.register_blueprint(blueprint=user_blueprint, url_prefix='/user')
     app.register_blueprint(blueprint=main_blueprint, url_prefix='/')
-    # app.add_url_rule('/', endpoint='user.register')
+    app.add_url_rule('/', endpoint='main.home')
 
     return app
