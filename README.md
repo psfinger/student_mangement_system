@@ -13,7 +13,7 @@ config.py文件中指定数据库路径
 2. 初始化数据库:
 utils/init_db.py 根据需要进行初始化，包括创建数据库、插入初始数据。
 
-3.启动flask应用:
+3. 启动flask应用:
 执行run.py
 
 ##目录结构描述
@@ -53,9 +53,9 @@ utils/init_db.py 根据需要进行初始化，包括创建数据库、插入初
     退出：同登出
 
 
-##**待实现内容**：
-1.在blueprint的属性（template_folder）中指定templates_path，无需在每此渲染时写html文件的“全”路径（可优化）
-2.目录结构待调整。建议将user，role，permission目录与main目录平行，放在同一级；grade和student作为main子目录
-3.CSS样式的学习与优化。尝试使用bootstrap进行渲染。
-4.规范统一endpoint和route的命名，如加不加s，加不加_
-5.问题：切换页面时，地址栏url不改变。如何能改变
+## 待实现内容：
+1. 在blueprint的属性（template_folder）中指定templates_path，无需在每此渲染时写html文件的“全”路径（可优化）
+2. 目录结构待调整。建议将user，role，permission目录与main目录平行，放在同一级；grade和student作为main子目录
+3. CSS样式的学习与优化。尝试使用bootstrap进行渲染。
+4. 规范统一endpoint和route的命名，如加不加s，加不加_
+5. 问题：切换页面时，地址栏url不改变。如何能改变
